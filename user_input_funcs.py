@@ -24,5 +24,6 @@ def query_structured_params(legal_query_params):
         return False
     
     user_query_text = input("Your query: ")
+    user_destination_file = input("Destination file name (incl. absolute path): ")
 
-    return (user_param_choice, user_query_text)
+    return (user_param_choice, user_query_text, user_destination_file)

@@ -58,9 +58,8 @@ def search_category(cat_query, metadata_df):
 
 def search_text(text_query, location_inverted_index):
     # Function to load inverted index from a JSON file
-    with open(location_inverted_index, 'rb') as f:
+    with open(location_inverted_index, 'r') as f:
         inverted_index = json.load(f)
-        # inverted_index = ijson.parse(f)
 
         query_tokens = []
         
@@ -68,7 +67,9 @@ def search_text(text_query, location_inverted_index):
             if token not in stop_words and len(token) > 1:
                 processed_token = lemmatizer.lemmatize(token)
                 query_tokens.append(processed_token.lower())
+
         relevant_documents = {}
+        
         for token in query_tokens:
             if token in inverted_index:
                 for doc in tqdm(inverted_index[token]):
@@ -82,8 +83,6 @@ def search_text(text_query, location_inverted_index):
         for doc, count in relevant_documents.items():
             relevant_documents[doc] = count / total_query_tokens
 
-        # print("Query Tokens: ", query_tokens)
-
         results = sorted([(document[0], "_", "_", document[1]) for document in relevant_documents.items()], key=lambda x: x[3], reverse=True)
 
         return results
@@ -95,22 +94,16 @@ def export_results(results, destination_path):
         print("Unfortunately your search query doesn't return anything useful.")
         print("Please try another search term.")
     else:
-        with open("./query.tsv", 'w', encoding='utf-8') as f:
+        with open(destination_path, 'w', encoding='utf-8') as f:
             # Write header
             f.write("Rank\tBook ID\tTitle\tAuthor\tResult Score\n")
             # Write results
             rank_of_result = 1
             for result in results:
                 if result[-1] > 0.1:
-                    # if result[0] == 15202:
-                    #     print(result[1].replace('\n', ''))
-                    #     print(result[2])
-                    #     print(result[3])
                     title = result[1].replace('\n', '')
                     f.write(f"{rank_of_result}\t{result[0]}\t{title}\t{result[2]}\t{result[3]:.2f}\n")
                     rank_of_result += 1
-                    # fields = [str(field).strip() for field in result]
-                    # f.write('\t'.join(fields) + '\n')
 
         print(f"Results have been exported to {destination_path}")
 
@@ -126,6 +119,6 @@ def query_structured(location_inverted_index, metadata_df, user_query_param):
     if user_query_param[0] == "c":
         result = search_category(user_query_param[1], metadata_df)
         export_results(result, user_query_param[2])
-    if user_query_param[0] == "p":
+    if user_query_param[0] == "s":
         result = search_text(user_query_param[1], location_inverted_index)
         export_results(result, user_query_param[2])

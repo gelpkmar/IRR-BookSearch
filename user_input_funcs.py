@@ -18,7 +18,7 @@ def query_structured_params(legal_query_params):
     print("Which of the below information do you possess about the book in question:")
     for param in legal_query_params.items():
         print(f"{param[0]} - {param[1]}")
-    user_param_choice = input("Your choice (a/t/p/c): ")
+    user_param_choice = input("Your choice (a/t/c/s): ")
 
     if user_param_choice not in legal_query_params:
         return False

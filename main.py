@@ -1,14 +1,13 @@
 import query_funcs, user_input_funcs
 import pandas as pd
 
-LOCATION_INVERTED_INDEX = "/Users/thealteredmg/Desktop/IRR_src/books_preprocessed/inverted_index.json"
+LOCATION_INVERTED_INDEX = "/Users/thealteredmg/Desktop/IRR_src/books_preprocessed/inverted_index_medium_large.json"
 LOCATION_METADATA_ABS = "/Users/thealteredmg/Desktop/IRR_src/metadata.csv"
 LEGAL_QUERY_PARAMS = {"a": "author",
                       "t": "title",
-                      "p": "text passage",
-                      "c": "category"}
+                      "c": "category",
+                      "s": "simple full-text search"}
 QUERY_FUNCS = {
-    "simple": None,
     "structured": query_funcs.query_structured
 }
 

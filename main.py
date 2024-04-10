@@ -15,7 +15,7 @@ QUERY_FUNCS = {
 metadata_df = pd.read_csv(LOCATION_METADATA_ABS)
 
 # Get user query choice
-user_query_type = user_input_funcs.user_query_choice()
+user_query_type = "structured"
 user_query_param = None
 
 if user_query_type == "structured":
